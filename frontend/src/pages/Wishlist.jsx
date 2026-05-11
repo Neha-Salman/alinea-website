@@ -16,21 +16,41 @@ const Wishlist = () => {
 
     <div
       style={{
-        padding: '140px 5% 60px',
+        padding: '140px 5% 80px',
         minHeight: '100vh',
       }}
     >
 
-      <h1
+      <div
         style={{
           textAlign: 'center',
-          fontSize: '4rem',
-          marginBottom: '50px',
-          color: '#3e2f25',
+          marginBottom: '60px',
         }}
       >
-        My Wishlist
-      </h1>
+
+        <p
+          style={{
+            color: '#b58a5a',
+            letterSpacing: '3px',
+            textTransform: 'uppercase',
+            marginBottom: '12px',
+            fontSize: '14px',
+          }}
+        >
+          Saved Products
+        </p>
+
+        <h1
+          style={{
+            fontSize: '4rem',
+            color: '#3e2f25',
+            fontWeight: '500',
+          }}
+        >
+          My Wishlist
+        </h1>
+
+      </div>
 
       {wishlist.length === 0 ? (
 
@@ -54,13 +74,14 @@ const Wishlist = () => {
 
             <button
               style={{
-                padding: '14px 28px',
-                borderRadius: '12px',
+                padding: '14px 30px',
+                borderRadius: '14px',
                 border: 'none',
                 background: '#c88a5b',
                 color: 'white',
                 fontSize: '16px',
                 cursor: 'pointer',
+                fontWeight: '500',
               }}
             >
               Continue Shopping
@@ -75,19 +96,28 @@ const Wishlist = () => {
         <div
           style={{
             display: 'grid',
+
             gridTemplateColumns:
-              'repeat(auto-fit, minmax(240px, 280px))',
-            justifyContent: 'center',
-            gap: '30px',
+              'repeat(4, minmax(0, 1fr))',
+
+            gap: '28px',
+
+            alignItems: 'start',
           }}
         >
 
           {wishlist.map((product) => (
 
-            <ProductCard
-              key={product.id}
-              product={product}
-            />
+            <div
+              key={product._id || product.id}
+              style={{
+                width: '100%',
+              }}
+            >
+
+              <ProductCard product={product} />
+
+            </div>
 
           ))}
 

@@ -26,13 +26,15 @@ const CartCheckout = () => {
 
   const dispatch = useDispatch();
 
+  // FIXED CART SELECTOR
   const cart = useSelector(
-    (state) => state.cart.items.cartItems
+    (state) => state.cart.items || []
   );
 
   const [checkoutStep, setCheckoutStep] =
     useState('cart');
 
+  // FIXED TOTAL
   const total = cart.reduce(
     (acc, item) =>
       acc + item.price * item.quantity,
@@ -46,6 +48,7 @@ const CartCheckout = () => {
     setCheckoutStep('success');
 
     dispatch(clearCart());
+
   };
 
   if (checkoutStep === 'success') {
@@ -131,7 +134,7 @@ const CartCheckout = () => {
               {cart.map((item) => (
 
                 <div
-                  key={item.id}
+                  key={item._id || item.id}
                   className="cart-item"
                 >
 
@@ -144,7 +147,7 @@ const CartCheckout = () => {
                   <div className="cart-item-details">
 
                     <Link
-                      to={`/product/${item.id}`}
+                      to={`/product/${item._id || item.id}`}
                     >
 
                       <h3 className="cart-item-title">
@@ -154,7 +157,7 @@ const CartCheckout = () => {
                     </Link>
 
                     <p className="cart-item-price">
-                      ${item.price.toFixed(2)}
+                      Rs. {item.price}
                     </p>
 
                   </div>
@@ -165,9 +168,12 @@ const CartCheckout = () => {
                       onClick={() =>
                         dispatch(
                           updateQuantity({
-                            id: item.id,
+                            id:
+                              item._id || item.id,
                             quantity:
-                              item.quantity - 1,
+                              item.quantity > 1
+                                ? item.quantity - 1
+                                : 1,
                           })
                         )
                       }
@@ -187,7 +193,8 @@ const CartCheckout = () => {
                       onClick={() =>
                         dispatch(
                           updateQuantity({
-                            id: item.id,
+                            id:
+                              item._id || item.id,
                             quantity:
                               item.quantity + 1,
                           })
@@ -202,18 +209,20 @@ const CartCheckout = () => {
 
                   <div className="cart-item-total">
 
-                    $
+                    Rs.
                     {(
                       item.price *
                       item.quantity
-                    ).toFixed(2)}
+                    ).toFixed(0)}
 
                   </div>
 
                   <button
                     onClick={() =>
                       dispatch(
-                        removeFromCart(item.id)
+                        removeFromCart(
+                          item._id || item.id
+                        )
                       )
                     }
                     className="remove-btn"
@@ -365,7 +374,7 @@ const CartCheckout = () => {
             </span>
 
             <span>
-              ${total.toFixed(2)}
+              Rs. {total.toFixed(0)}
             </span>
 
           </div>
@@ -383,7 +392,7 @@ const CartCheckout = () => {
             <span>Total</span>
 
             <span>
-              ${total.toFixed(2)}
+              Rs. {total.toFixed(0)}
             </span>
 
           </div>
